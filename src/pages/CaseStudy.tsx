@@ -2,6 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
+// ✅ CORRECTED IMPORTS
+import ArchitectureInteriorDesign from '../assets/architectureinteriordesign.png';
+import BrandingIdentity from '../assets/brandingidentity.png';
+import SocialMediaContent from '../assets/socialmediacontent.png';
+import UIUXProductDesign from '../assets/uiuxproductdesign.png';
+import Visualization3DRendering from '../assets/visualization3drendering.png';
+import WebDevelopmentDesign from '../assets/webdevelopmentdesign.png';
+
 import Footer from '../components/Footer';
 
 // ============================================================================
@@ -70,7 +78,7 @@ const MagneticButton = ({ children, className = "", href = "#", onClick }) => {
 };
 
 // ============================================================================
-// CASE STUDY DATA - COMPLETE WITH ALL SERVICES
+// CASE STUDY DATA - WITH IMPORTED IMAGES
 // ============================================================================
 const caseStudies = {
   // 1. Web Development
@@ -119,11 +127,12 @@ const caseStudies = {
       author: "John Anderson",
       role: "CEO, TechLogistics Inc."
     },
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: WebDevelopmentDesign,
     images: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format",
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format",
-      "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&auto=format",
+      WebDevelopmentDesign,
+      WebDevelopmentDesign,
+      WebDevelopmentDesign,
     ]
   },
 
@@ -173,10 +182,11 @@ const caseStudies = {
       author: "Sarah Mitchell",
       role: "CEO, InnovateTech Solutions"
     },
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: BrandingIdentity,
     images: [
-      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&auto=format",
-      "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&auto=format",
+      BrandingIdentity,
+      BrandingIdentity,
     ]
   },
 
@@ -226,10 +236,11 @@ const caseStudies = {
       author: "David & Maria Rodriguez",
       role: "Homeowners"
     },
-    image: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: ArchitectureInteriorDesign,
     images: [
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&auto=format",
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&auto=format",
+      ArchitectureInteriorDesign,
+      ArchitectureInteriorDesign,
     ]
   },
 
@@ -279,10 +290,11 @@ const caseStudies = {
       author: "Michael Roberts",
       role: "CTO, ShopWave Retail"
     },
-    image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: UIUXProductDesign,
     images: [
-      "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&auto=format",
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format",
+      UIUXProductDesign,
+      UIUXProductDesign,
     ]
   },
 
@@ -332,9 +344,10 @@ const caseStudies = {
       author: "Emma Thompson",
       role: "Marketing Director"
     },
-    image: "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: Visualization3DRendering,
     images: [
-      "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&auto=format",
+      Visualization3DRendering,
     ]
   },
 
@@ -384,10 +397,11 @@ const caseStudies = {
       author: "James Wilson",
       role: "CEO, Digital Growth Agency"
     },
-    image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: SocialMediaContent,
     images: [
-      "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&auto=format",
-      "https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=800&auto=format",
+      SocialMediaContent,
+      SocialMediaContent,
     ]
   },
 
@@ -437,10 +451,11 @@ const caseStudies = {
       author: "Robert Chen",
       role: "CEO, Global Enterprise Solutions"
     },
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: WebDevelopmentDesign,
     images: [
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format",
+      WebDevelopmentDesign,
+      WebDevelopmentDesign,
     ]
   },
 
@@ -490,10 +505,11 @@ const caseStudies = {
       author: "Emily White",
       role: "HR Director, TechHub Co-working"
     },
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&auto=format",
+    // ✅ USING IMPORTED IMAGES
+    image: ArchitectureInteriorDesign,
     images: [
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&auto=format",
-      "https://images.unsplash.com/photo-1618220179428-22790b461013?w=800&auto=format",
+      ArchitectureInteriorDesign,
+      ArchitectureInteriorDesign,
     ]
   }
 };
@@ -599,6 +615,10 @@ const CaseStudy = () => {
                 src={study.image} 
                 alt={study.title} 
                 className="w-full h-[400px] sm:h-[500px] object-cover"
+                onError={(e) => {
+                  console.error(`Failed to load image for ${study.title}`);
+                  e.target.src = 'https://via.placeholder.com/1200x500/161616/333333?text=Image+Not+Found';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-transparent" />
             </div>
@@ -731,7 +751,15 @@ const CaseStudy = () => {
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   className="rounded-2xl overflow-hidden hover:scale-105 transition-transform duration-500"
                 >
-                  <img src={img} alt={`${study.title} ${idx + 1}`} className="w-full h-64 object-cover" loading="lazy" />
+                  <img 
+                    src={img} 
+                    alt={`${study.title} ${idx + 1}`} 
+                    className="w-full h-64 object-cover" 
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/800x500/161616/333333?text=Image+Not+Found';
+                    }}
+                  />
                 </motion.div>
               ))}
             </div>

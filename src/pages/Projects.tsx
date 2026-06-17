@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 // Import your video
 import video1 from '../assets/videos/video-1.mp4';
 import Navigation from '../components/Navigation';
+import ArchitectureInteriorDesign from '../assets/architectureinteriordesign.png';
+import BrandingIdentity from '../assets/brandingidentity.png';
+import SocialMediaContent from '../assets/socialmediacontent.png';
+import UIUXProductDesign from '../assets/uiuxproductdesign.png';
+import Visualization3DRendering from '../assets/visualization3drendering.png';
+import WebDevelopmentDesign from '../assets/webdevelopmentdesign.png';
 import Footer from '../components/Footer';
 
 // ============================================================================
@@ -420,9 +426,49 @@ const ServiceSection = ({ title, subtitle, description, image, features, index, 
 };
 
 // ============================================================================
-// SOCIAL MEDIA REEL CARD COMPONENT
+// SOCIAL MEDIA REEL CARD COMPONENT - UPDATED TO SUPPORT VIMEO
 // ============================================================================
-const SocialReelCard = ({ video, title, views, likes, index }) => {
+const SocialReelCard = ({ video, title, views, likes, index, isVimeo = false }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
+  const iframeRef = useRef(null);
+
+  // Extract Vimeo ID from URL
+  const getVimeoId = (url) => {
+    const match = url.match(/vimeo\.com\/(\d+)/);
+    return match ? match[1] : null;
+  };
+
+  const handlePlayPause = () => {
+    if (isVimeo) {
+      // For Vimeo, we'll use the iframe postMessage API or just reload the iframe
+      const iframe = iframeRef.current;
+      if (iframe) {
+        if (isPlaying) {
+          // Pause - reload iframe to stop video
+          iframe.src = iframe.src;
+        } else {
+          // Play - reload with autoplay
+          const vimeoId = getVimeoId(video);
+          iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=1&controls=0&portrait=0`;
+        }
+        setIsPlaying(!isPlaying);
+      }
+    } else {
+      // For local videos
+      if (videoRef.current) {
+        if (isPlaying) {
+          videoRef.current.pause();
+        } else {
+          videoRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+      }
+    }
+  };
+
+  const vimeoId = isVimeo ? getVimeoId(video) : null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -432,15 +478,32 @@ const SocialReelCard = ({ video, title, views, likes, index }) => {
       whileHover={{ y: -8 }}
       className="group rounded-2xl overflow-hidden bg-[#161616] border border-white/10 hover:border-lime-400/40 transition-all duration-300"
     >
-      <div className="relative aspect-[9/16] overflow-hidden">
-        <video
-          src={video}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loop
-          muted
-          playsInline
-          preload="metadata"
-        />
+      <div className="relative aspect-[9/16] overflow-hidden bg-black">
+        {isVimeo && vimeoId ? (
+          // Vimeo embed
+          <iframe
+            ref={iframeRef}
+            src={`https://player.vimeo.com/video/${vimeoId}?autoplay=0&loop=1&muted=1&controls=0&portrait=0`}
+            className="w-full h-full"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            frameBorder="0"
+            title={title}
+          />
+        ) : (
+          // Local video
+          <video
+            ref={videoRef}
+            src={video}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loop
+            muted
+            playsInline
+            preload="metadata"
+          />
+        )}
+        
+        {/* Overlay content */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
           <div className="w-full">
             <p className="text-white font-medium text-sm">{title}</p>
@@ -450,18 +513,40 @@ const SocialReelCard = ({ video, title, views, likes, index }) => {
             </div>
           </div>
         </div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-14 h-14 rounded-full bg-lime-400 flex items-center justify-center shadow-2xl shadow-lime-400/40">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-black ml-1">
-              <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
-            </svg>
+        
+        {/* Play button overlay */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+          onClick={handlePlayPause}
+        >
+          <div className="w-14 h-14 rounded-full bg-lime-400 flex items-center justify-center shadow-2xl shadow-lime-400/40 hover:scale-110 transition-transform">
+            {isPlaying ? (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-black">
+                <path fillRule="evenodd" d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-black ml-1">
+                <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
+              </svg>
+            )}
           </div>
         </div>
+        
+        {/* Reel badge */}
         <div className="absolute top-3 left-3">
           <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white/80">
             📱 Reel
           </span>
         </div>
+        
+        {/* Vimeo badge */}
+        {isVimeo && (
+          <div className="absolute top-3 right-3">
+            <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-blue-500/60 backdrop-blur-sm border border-white/10 text-white/80">
+              Vimeo
+            </span>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -485,86 +570,109 @@ const Projects = () => {
   // ============================================================
   
   const webDevImages = [
-    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format',
-    'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format',
-    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format',
+    WebDevelopmentDesign,
+    WebDevelopmentDesign,
+    WebDevelopmentDesign,
   ];
 
   const architectureImages = [
-    'https://images.unsplash.com/photo-1618220179428-22790b461013?w=800&auto=format',
-    'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&auto=format',
-    'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&auto=format',
+    ArchitectureInteriorDesign,
+    ArchitectureInteriorDesign,
+    ArchitectureInteriorDesign,
   ];
 
   const brandingImages = [
-    'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format',
-    'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&auto=format',
-    'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&auto=format',
+    BrandingIdentity,
+    BrandingIdentity,
+    BrandingIdentity,
   ];
 
   const uxImages = [
-    'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&auto=format',
-    'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&auto=format',
-    'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format',
+    UIUXProductDesign,
+    UIUXProductDesign,
+    UIUXProductDesign,
   ];
 
   const visualizationImages = [
-    'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=800&auto=format',
-    'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&auto=format',
-    'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format',
+    Visualization3DRendering,
+    Visualization3DRendering,
+    Visualization3DRendering,
   ];
 
   const socialMediaImages = [
-    'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&auto=format',
-    'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&auto=format',
-    'https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=800&auto=format',
+    SocialMediaContent,
+    SocialMediaContent,
+    SocialMediaContent,
   ];
 
   // ============================================================
   // SOCIAL MEDIA REELS DATA
   // ============================================================
+  // 
+  // 🔥 HOW TO ADD VIMEO VIDEOS:
+  // 1. Copy your Vimeo video URL (e.g., https://vimeo.com/123456789)
+  // 2. Replace "video1" with your Vimeo URL
+  // 3. Set "isVimeo: true" for that reel
+  // 4. Leave "isVimeo: false" for local videos
+  // 
+  // Example: 
+  // {
+  //   id: 1,
+  //   title: "Brand Identity Showcase",
+  //   video: "https://vimeo.com/123456789", // 👈 Add your Vimeo URL here
+  //   views: "2.4M",
+  //   likes: "125K",
+  //   isVimeo: true, // 👈 Set to true for Vimeo videos
+  // }
+  // ============================================================
   const socialReels = useMemo(() => [
     {
       id: 1,
-      title: "Brand Identity Showcase",
-      video: video1,
+      title: "Color Grade Showcase",
+      video: "https://vimeo.com/1068495229", // 👈 REPLACE with your Vimeo URL
       views: "2.4M",
       likes: "125K",
+      isVimeo: true, // 👈 SET to true for Vimeo
     },
     {
       id: 2,
-      title: "UI/UX Design Process",
-      video: video1,
+      title: "Nischa video in Ali Abdaal's style",
+      video: "https://vimeo.com/1066199796", // Keep as local video
       views: "1.8M",
       likes: "98K",
+      isVimeo: true,
     },
     {
       id: 3,
-      title: "Architecture Visualization",
-      video: video1,
+      title: "Athlete Reel",
+      video: "https://vimeo.com/1066154660", // 👈 REPLACE with your Vimeo URL
       views: "3.2M",
       likes: "210K",
+      isVimeo: true, // 👈 SET to true for Vimeo
     },
     {
       id: 4,
-      title: "Web Development Timelapse",
-      video: video1,
+      title: "Ali Abdaal style",
+      video: "https://vimeo.com/1066092808", // Keep as local video
       views: "1.5M",
       likes: "76K",
+      isVimeo: true,
     },
     {
       id: 5,
-      title: "Brand Campaign Reel",
-      video: video1,
+      title: "Pink Load Trailer Video",
+      video: "https://vimeo.com/1066093854", // 👈 REPLACE with your Vimeo URL
       views: "4.1M",
       likes: "312K",
+      isVimeo: true, // 👈 SET to true for Vimeo
     },
     {
       id: 6,
-      title: "Product Design Process",
-      video: video1,
+      title: "Guillaume reel",
+      video:  "https://vimeo.com/1066091840", // Keep as local video
       views: "2.7M",
       likes: "156K",
+      isVimeo: true,
     },
   ], []);
 
@@ -846,7 +954,12 @@ const Projects = () => {
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
                 {socialReels.map((reel, idx) => (
-                  <SocialReelCard key={reel.id} {...reel} index={idx} />
+                  <SocialReelCard 
+                    key={reel.id} 
+                    {...reel} 
+                    index={idx}
+                    isVimeo={reel.isVimeo || false}
+                  />
                 ))}
               </div>
             </div>
