@@ -122,18 +122,7 @@ const caseStudies = {
         description: "Successfully deployed the platform with 24/7 monitoring and ongoing support for continuous improvement."
       }
     ],
-    testimonial: {
-      quote: "This platform transformed our logistics operations. We've seen unprecedented efficiency gains and our drivers love the ease of use.",
-      author: "John Anderson",
-      role: "CEO, TechLogistics Inc."
-    },
-    // ✅ USING IMPORTED IMAGES
     image: WebDevelopmentDesign,
-    images: [
-      WebDevelopmentDesign,
-      WebDevelopmentDesign,
-      WebDevelopmentDesign,
-    ]
   },
 
   // 2. Branding & Identity
@@ -177,17 +166,7 @@ const caseStudies = {
         description: "Rolled out the new brand across all touchpoints including website, marketing materials, and internal communications."
       }
     ],
-    testimonial: {
-      quote: "The new brand identity has completely transformed how our clients and employees perceive us. It's been a game-changer for our business.",
-      author: "Sarah Mitchell",
-      role: "CEO, InnovateTech Solutions"
-    },
-    // ✅ USING IMPORTED IMAGES
     image: BrandingIdentity,
-    images: [
-      BrandingIdentity,
-      BrandingIdentity,
-    ]
   },
 
   // 3. Architecture & Interior
@@ -231,17 +210,7 @@ const caseStudies = {
         description: "Oversaw construction, ensuring quality and design integrity, and delivered the completed villa."
       }
     ],
-    testimonial: {
-      quote: "The design exceeded our expectations. The team created a space that is both luxurious and sustainable.",
-      author: "David & Maria Rodriguez",
-      role: "Homeowners"
-    },
-    // ✅ USING IMPORTED IMAGES
     image: ArchitectureInteriorDesign,
-    images: [
-      ArchitectureInteriorDesign,
-      ArchitectureInteriorDesign,
-    ]
   },
 
   // 4. UI/UX Design
@@ -285,17 +254,7 @@ const caseStudies = {
         description: "Conducted usability testing and refined designs based on user feedback."
       }
     ],
-    testimonial: {
-      quote: "The new platform has significantly improved our conversion rates and customer satisfaction. A truly transformative project.",
-      author: "Michael Roberts",
-      role: "CTO, ShopWave Retail"
-    },
-    // ✅ USING IMPORTED IMAGES
     image: UIUXProductDesign,
-    images: [
-      UIUXProductDesign,
-      UIUXProductDesign,
-    ]
   },
 
   // 5. Visualization & 3D
@@ -339,16 +298,7 @@ const caseStudies = {
         description: "Enhanced final renders with color correction and compositing."
       }
     ],
-    testimonial: {
-      quote: "The quality of the 3D renderings exceeded our expectations and has been invaluable for our marketing efforts.",
-      author: "Emma Thompson",
-      role: "Marketing Director"
-    },
-    // ✅ USING IMPORTED IMAGES
     image: Visualization3DRendering,
-    images: [
-      Visualization3DRendering,
-    ]
   },
 
   // 6. Social Media Handling
@@ -392,17 +342,7 @@ const caseStudies = {
         description: "Monitored performance metrics and optimized content based on insights."
       }
     ],
-    testimonial: {
-      quote: "Our social media presence has grown exponentially. The team's strategic approach has been instrumental in our success.",
-      author: "James Wilson",
-      role: "CEO, Digital Growth Agency"
-    },
-    // ✅ USING IMPORTED IMAGES
     image: SocialMediaContent,
-    images: [
-      SocialMediaContent,
-      SocialMediaContent,
-    ]
   },
 
   // 7. Web Designing
@@ -446,17 +386,7 @@ const caseStudies = {
         description: "Delivered comprehensive design files and style guides for development."
       }
     ],
-    testimonial: {
-      quote: "The new website design has completely elevated our brand presence. It's professional, engaging, and has significantly improved our conversion rates.",
-      author: "Robert Chen",
-      role: "CEO, Global Enterprise Solutions"
-    },
-    // ✅ USING IMPORTED IMAGES
     image: WebDevelopmentDesign,
-    images: [
-      WebDevelopmentDesign,
-      WebDevelopmentDesign,
-    ]
   },
 
   // 8. Architecture & Interior (Office Design)
@@ -500,17 +430,7 @@ const caseStudies = {
         description: "Selected and installed furniture, completed the fit-out, and delivered the space."
       }
     ],
-    testimonial: {
-      quote: "The new office space has transformed how we work. Employee satisfaction is at an all-time high and collaboration has improved significantly.",
-      author: "Emily White",
-      role: "HR Director, TechHub Co-working"
-    },
-    // ✅ USING IMPORTED IMAGES
     image: ArchitectureInteriorDesign,
-    images: [
-      ArchitectureInteriorDesign,
-      ArchitectureInteriorDesign,
-    ]
   }
 };
 
@@ -731,58 +651,6 @@ const CaseStudy = () => {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ========== IMAGE GALLERY ========== */}
-        <section className="py-16 px-4 sm:px-6 border-t border-white/5">
-          <div className="container mx-auto max-w-5xl">
-            <AnimatedSection className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold">Gallery</h2>
-              <p className="text-white/50 mt-2">Visual highlights from the project</p>
-            </AnimatedSection>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {study.images.map((img, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="rounded-2xl overflow-hidden hover:scale-105 transition-transform duration-500"
-                >
-                  <img 
-                    src={img} 
-                    alt={`${study.title} ${idx + 1}`} 
-                    className="w-full h-64 object-cover" 
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/800x500/161616/333333?text=Image+Not+Found';
-                    }}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ========== TESTIMONIAL ========== */}
-        <section className="py-16 px-4 sm:px-6 border-t border-white/5">
-          <div className="container mx-auto max-w-4xl">
-            <AnimatedSection className="bg-gradient-to-br from-[#161616] to-[#0D0D0D] rounded-3xl p-8 sm:p-12 border border-white/10 text-center">
-              <div className="flex gap-1 justify-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-6 h-6 text-lime-400 fill-lime-400" viewBox="0 0 20 20">
-                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                  </svg>
-                ))}
-              </div>
-              <blockquote className="text-xl sm:text-2xl text-white/80 italic mb-6">"{study.testimonial.quote}"</blockquote>
-              <div>
-                <p className="font-semibold text-white">{study.testimonial.author}</p>
-                <p className="text-white/40 text-sm">{study.testimonial.role}</p>
-              </div>
-            </AnimatedSection>
           </div>
         </section>
 

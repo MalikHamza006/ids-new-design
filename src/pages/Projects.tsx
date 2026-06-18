@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, useAnimation, useInView, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-// Import your video
-import video1 from '../assets/videos/video-1.mp4';
+// Import your videos - make sure the file extensions match your actual files
+import video1 from '../assets/videos/video1.mp4';
+import video2 from '../assets/videos/video2.mp4';
 import Navigation from '../components/Navigation';
 import ArchitectureInteriorDesign from '../assets/architectureinteriordesign.png';
 import BrandingIdentity from '../assets/brandingidentity.png';
@@ -10,6 +11,10 @@ import SocialMediaContent from '../assets/socialmediacontent.png';
 import UIUXProductDesign from '../assets/uiuxproductdesign.png';
 import Visualization3DRendering from '../assets/visualization3drendering.png';
 import WebDevelopmentDesign from '../assets/webdevelopmentdesign.png';
+import shippingfullfilment from '../assets/shippingfullfilment.jpg';
+import publicshop from '../assets/publicshop.jpg';
+import poseai from '../assets/poseai.jpg';
+import bakery from '../assets/bakery.jpeg';
 import Footer from '../components/Footer';
 
 // ============================================================================
@@ -261,22 +266,60 @@ const TestimonialCard = ({ quote, author, role, image }) => {
   );
 };
 
-const RelatedProjectCard = ({ title, category, image, index }) => {
+// UPDATED: Project Testimonial Card with better spacing and design
+const ProjectTestimonialCard = ({ project }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -10 }}
-      className="group cursor-pointer"
+      transition={{ duration: 0.5 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      className="group relative overflow-hidden rounded-2xl bg-[#161616] border border-white/10 hover:border-lime-400/40 transition-all duration-500 shadow-xl h-full"
     >
-      <div className="relative overflow-hidden rounded-2xl aspect-video mb-4">
-        <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <img 
+          src={project.image} 
+          alt={project.title} 
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+        
+        {/* Overlay content with improved spacing */}
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-lime-400 text-xs font-medium uppercase tracking-wider bg-lime-400/10 px-3 py-1 rounded-full">
+              {project.category}
+            </span>
+            {project.year && (
+              <span className="text-white/40 text-xs font-medium">
+                {project.year}
+              </span>
+            )}
+          </div>
+          <h3 className="text-lg font-bold text-white mb-1 group-hover:text-lime-400 transition-colors">
+            {project.title}
+          </h3>
+          <p className="text-white/60 text-sm leading-relaxed line-clamp-2">
+            {project.description}
+          </p>
+          
+          {/* Tags with better spacing */}
+          {project.tags && (
+            <div className="flex flex-wrap gap-2 mt-3">
+              {project.tags.slice(0, 3).map((tag, idx) => (
+                <span key={idx} className="text-[10px] font-medium text-white/40 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        {/* Decorative gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-lime-400/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
-      <p className="text-lime-400 text-sm uppercase tracking-wider mb-1">{category}</p>
-      <h3 className="text-xl font-semibold group-hover:text-lime-400 transition-colors">{title}</h3>
     </motion.div>
   );
 };
@@ -426,9 +469,9 @@ const ServiceSection = ({ title, subtitle, description, image, features, index, 
 };
 
 // ============================================================================
-// SOCIAL MEDIA REEL CARD COMPONENT - UPDATED TO SUPPORT VIMEO
+// SOCIAL MEDIA REEL CARD COMPONENT - SUPPORTS VIMEO AND LOCAL VIDEOS
 // ============================================================================
-const SocialReelCard = ({ video, title, views, likes, index, isVimeo = false }) => {
+const SocialReelCard = ({ video, title, views, likes, index, isVimeo = false, isLocal = false }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
   const iframeRef = useRef(null);
@@ -539,6 +582,15 @@ const SocialReelCard = ({ video, title, views, likes, index, isVimeo = false }) 
           </span>
         </div>
         
+        {/* Local video badge */}
+        {isLocal && (
+          <div className="absolute top-3 right-3">
+            <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-green-500/60 backdrop-blur-sm border border-white/10 text-white/80">
+              Local
+            </span>
+          </div>
+        )}
+        
         {/* Vimeo badge */}
         {isVimeo && (
           <div className="absolute top-3 right-3">
@@ -606,73 +658,62 @@ const Projects = () => {
   ];
 
   // ============================================================
-  // SOCIAL MEDIA REELS DATA
-  // ============================================================
-  // 
-  // 🔥 HOW TO ADD VIMEO VIDEOS:
-  // 1. Copy your Vimeo video URL (e.g., https://vimeo.com/123456789)
-  // 2. Replace "video1" with your Vimeo URL
-  // 3. Set "isVimeo: true" for that reel
-  // 4. Leave "isVimeo: false" for local videos
-  // 
-  // Example: 
-  // {
-  //   id: 1,
-  //   title: "Brand Identity Showcase",
-  //   video: "https://vimeo.com/123456789", // 👈 Add your Vimeo URL here
-  //   views: "2.4M",
-  //   likes: "125K",
-  //   isVimeo: true, // 👈 Set to true for Vimeo videos
-  // }
+  // SOCIAL MEDIA REELS DATA - Mixed with local videos and Vimeo
   // ============================================================
   const socialReels = useMemo(() => [
     {
       id: 1,
       title: "Color Grade Showcase",
-      video: "https://vimeo.com/1068495229", // 👈 REPLACE with your Vimeo URL
+      video: "https://vimeo.com/1068495229",
       views: "2.4M",
       likes: "125K",
-      isVimeo: true, // 👈 SET to true for Vimeo
+      isVimeo: true,
+      isLocal: false,
     },
     {
       id: 2,
-      title: "Nischa video in Ali Abdaal's style",
-      video: "https://vimeo.com/1066199796", // Keep as local video
+      title: "Local Video 1",
+      video: video1,
       views: "1.8M",
       likes: "98K",
-      isVimeo: true,
+      isVimeo: false,
+      isLocal: true,
     },
     {
       id: 3,
       title: "Athlete Reel",
-      video: "https://vimeo.com/1066154660", // 👈 REPLACE with your Vimeo URL
+      video: "https://vimeo.com/1066154660",
       views: "3.2M",
       likes: "210K",
-      isVimeo: true, // 👈 SET to true for Vimeo
+      isVimeo: true,
+      isLocal: false,
     },
     {
       id: 4,
-      title: "Ali Abdaal style",
-      video: "https://vimeo.com/1066092808", // Keep as local video
+      title: "Local Video 2",
+      video: video2,
       views: "1.5M",
       likes: "76K",
-      isVimeo: true,
+      isVimeo: false,
+      isLocal: true,
     },
     {
       id: 5,
       title: "Pink Load Trailer Video",
-      video: "https://vimeo.com/1066093854", // 👈 REPLACE with your Vimeo URL
+      video: "https://vimeo.com/1066093854",
       views: "4.1M",
       likes: "312K",
-      isVimeo: true, // 👈 SET to true for Vimeo
+      isVimeo: true,
+      isLocal: false,
     },
     {
       id: 6,
       title: "Guillaume reel",
-      video:  "https://vimeo.com/1066091840", // Keep as local video
+      video: "https://vimeo.com/1066091840",
       views: "2.7M",
       likes: "156K",
       isVimeo: true,
+      isLocal: false,
     },
   ], []);
 
@@ -745,6 +786,48 @@ const Projects = () => {
       tags: ["Interior", "Office", "Modern"]
     },
   ], []);
+
+  // ============================================================
+// REAL PROJECTS DATA - 4 projects for 2x2 grid
+// ============================================================
+const realProjects = useMemo(() => [
+  {
+    id: 1,
+    title: "Bakery Faize Nagina",
+    category: "UI/UX Design",
+    description: "Complete user experience overhaul for a leading e-commerce platform resulting in 45% increase in conversions.",
+    image: bakery,
+    tags: ["UI/UX", "E-commerce", "Conversion Optimization"],
+    year: "2024"
+  },
+  {
+    id: 2,
+    title: "Pose Ai",
+    category: "AI powered pose detection",
+    description: "Comprehensive brand strategy and visual identity for a 5-star hotel chain across 12 locations.",
+    image: poseai,
+    tags: ["Detecting", "Pose", "AI"],
+    year: "2024"
+  },
+  {
+    id: 3,
+    title: "Public Shop",
+    category: "App Development",
+    description: "IoT-enabled dashboard for smart bakery management with real-time analytics and device control.",
+    image: publicshop,
+    tags: ["IoT", "Dashboard", "Real-time"],
+    year: "2023"
+  },
+  {
+    id: 4,
+    title: "Lahore Plastic",
+    category: "Shipping & Fullfilment",
+    description: "Sustainable and ergonomic web design for a real startup, featuring biophilic elements and smart strategies.",
+    image: shippingfullfilment,
+    tags: ["Interior", "Sustainable", "Smart Office"],
+    year: "2024"
+  },
+], []);
 
   // ============================================================
   // SERVICES DATA
@@ -857,12 +940,6 @@ const Projects = () => {
     return () => clearTimeout(timer);
   }, [filteredProjects, filter]);
 
-  const verticalVideos = [
-     video1,
-     video1,
-     video1,
-  ];
-
   const testimonials = [
     {
       quote: "From start to finish, they exceeded every expectation. Their attention to detail and creative vision turned our idea into something far more powerful than we ever imagined.",
@@ -874,12 +951,6 @@ const Projects = () => {
       author: "Michael Chen",
       role: "Product Director, TechCorp"
     }
-  ];
-
-  const relatedProjects = [
-    { title: "Quantum Interface", category: "Web Development", image: webDevImages[0] },
-    { title: "Neural Studio", category: "Brand Identity", image: brandingImages[0] },
-    { title: "Digital Frontier", category: "Campaign", image: socialMediaImages[0] }
   ];
 
   return (
@@ -959,6 +1030,7 @@ const Projects = () => {
                     {...reel} 
                     index={idx}
                     isVimeo={reel.isVimeo || false}
+                    isLocal={reel.isLocal || false}
                   />
                 ))}
               </div>
@@ -1004,51 +1076,20 @@ const Projects = () => {
           </div>
         </section>
 
-        {/* ========== METRICS SECTION ========== */}
+        {/* ========== REAL PROJECTS SECTION (2x2 Grid with improved spacing) ========== */}
         <section className="py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-16" delay={0.1}>
-            <span className="text-lime-400 text-sm font-mono tracking-wider uppercase">Results</span>
-            <h2 className="text-4xl sm:text-5xl font-bold mt-4">Performance by the numbers</h2>
-            <p className="text-white/50 mt-4 max-w-2xl mx-auto">Real metrics that demonstrate our impact and commitment to excellence</p>
+            <span className="text-lime-400 text-sm font-mono tracking-wider uppercase">Portfolio Highlights</span>
+            <h2 className="text-4xl sm:text-5xl font-bold mt-4">Real Projects We've Delivered</h2>
+            <p className="text-white/50 mt-4 max-w-2xl mx-auto">
+              Each project showcases our commitment to excellence and innovation across various domains.
+            </p>
           </AnimatedSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <MetricCard value="2.5M" label="Total Impressions" />
-            <MetricCard value="420K" label="Engagements" />
-            <MetricCard value="98" label="Client Satisfaction" suffix="%" />
-            <MetricCard value="35" label="Conversion Lift" suffix="%" />
-          </div>
-        </section>
-
-        {/* ========== FLOATING CARDS SECTION ========== */}
-        <section className="py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <FloatingCard className="text-center">
-              <div className="w-16 h-16 rounded-full bg-lime-400/10 flex items-center justify-center mx-auto mb-5">
-                <svg className="w-8 h-8 text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Lightning Fast</h3>
-              <p className="text-white/50">99th percentile Lighthouse scores with sub-100ms initial load times.</p>
-            </FloatingCard>
-            <FloatingCard className="text-center">
-              <div className="w-16 h-16 rounded-full bg-lime-400/10 flex items-center justify-center mx-auto mb-5">
-                <svg className="w-8 h-8 text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Enterprise Security</h3>
-              <p className="text-white/50">SOC2 compliant infrastructure with end-to-end encryption.</p>
-            </FloatingCard>
-            <FloatingCard className="text-center">
-              <div className="w-16 h-16 rounded-full bg-lime-400/10 flex items-center justify-center mx-auto mb-5">
-                <svg className="w-8 h-8 text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Global Scale</h3>
-              <p className="text-white/50">Multi-region deployment serving users across 6 continents.</p>
-            </FloatingCard>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {realProjects.map((project) => (
+              <ProjectTestimonialCard key={project.id} project={project} />
+            ))}
           </div>
         </section>
 
@@ -1062,19 +1103,6 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, idx) => (
               <TestimonialCard key={idx} {...testimonial} />
-            ))}
-          </div>
-        </section>
-
-        {/* ========== RELATED PROJECTS ========== */}
-        <section className="py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection className="text-center mb-16" delay={0.1}>
-            <span className="text-lime-400 text-sm font-mono tracking-wider uppercase">Explore More</span>
-            <h2 className="text-4xl sm:text-5xl font-bold mt-4">Related Projects</h2>
-          </AnimatedSection>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedProjects.map((project, idx) => (
-              <RelatedProjectCard key={idx} {...project} index={idx} />
             ))}
           </div>
         </section>
@@ -1134,6 +1162,12 @@ const Projects = () => {
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
         ::-webkit-scrollbar {
           width: 8px;
