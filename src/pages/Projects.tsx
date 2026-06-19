@@ -266,61 +266,174 @@ const TestimonialCard = ({ quote, author, role, image }) => {
   );
 };
 
-// UPDATED: Project Testimonial Card with better spacing and design
+// ============================================================================
+// PROJECT TESTIMONIAL CARD - UPDATED WITH LINK TO CASE STUDY
+// ============================================================================
 const ProjectTestimonialCard = ({ project }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      className="group relative overflow-hidden rounded-2xl bg-[#161616] border border-white/10 hover:border-lime-400/40 transition-all duration-500 shadow-xl h-full"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <img 
-          src={project.image} 
-          alt={project.title} 
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-        
-        {/* Overlay content with improved spacing */}
-        <div className="absolute bottom-0 left-0 right-0 p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-lime-400 text-xs font-medium uppercase tracking-wider bg-lime-400/10 px-3 py-1 rounded-full">
-              {project.category}
-            </span>
-            {project.year && (
-              <span className="text-white/40 text-xs font-medium">
-                {project.year}
+    <Link to={`/case-study/${project.id}`} className="block h-full">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        whileHover={{ y: -8, scale: 1.02 }}
+        className="group relative overflow-hidden rounded-2xl bg-[#161616] border border-white/10 hover:border-lime-400/40 transition-all duration-500 shadow-xl h-full cursor-pointer"
+      >
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <img 
+            src={project.image} 
+            alt={project.title} 
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+          
+          {/* Overlay content with improved spacing */}
+          <div className="absolute bottom-0 left-0 right-0 p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-lime-400 text-xs font-medium uppercase tracking-wider bg-lime-400/10 px-3 py-1 rounded-full">
+                {project.category}
               </span>
+              {project.year && (
+                <span className="text-white/40 text-xs font-medium">
+                  {project.year}
+                </span>
+              )}
+            </div>
+            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-lime-400 transition-colors">
+              {project.title}
+            </h3>
+            <p className="text-white/60 text-sm leading-relaxed line-clamp-2">
+              {project.description}
+            </p>
+            
+            {/* Tags with better spacing */}
+            {project.tags && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {project.tags.slice(0, 3).map((tag, idx) => (
+                  <span key={idx} className="text-[10px] font-medium text-white/40 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             )}
           </div>
-          <h3 className="text-lg font-bold text-white mb-1 group-hover:text-lime-400 transition-colors">
-            {project.title}
-          </h3>
-          <p className="text-white/60 text-sm leading-relaxed line-clamp-2">
-            {project.description}
-          </p>
           
-          {/* Tags with better spacing */}
-          {project.tags && (
-            <div className="flex flex-wrap gap-2 mt-3">
-              {project.tags.slice(0, 3).map((tag, idx) => (
-                <span key={idx} className="text-[10px] font-medium text-white/40 bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+          {/* "View Case Study" indicator on hover */}
+          <div className="absolute bottom-20 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-lime-400 text-xs font-medium flex items-center gap-1">
+              View Case Study →
+            </span>
+          </div>
+          
+          {/* Decorative gradient overlay on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-lime-400/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
-        
-        {/* Decorative gradient overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-lime-400/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      </div>
-    </motion.div>
+      </motion.div>
+    </Link>
+  );
+};
+
+// ============================================================================
+// PROJECT VIDEO CARD COMPONENT - For video projects (Reels format)
+// ============================================================================
+const ProjectVideoCard = ({ project, index }) => {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
+  return (
+    <Link to={`/case-study/${project.id}`} className="block">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.08 }}
+        whileHover={{ y: -8 }}
+        className="group rounded-2xl overflow-hidden bg-[#161616] border border-white/10 hover:border-lime-400/40 transition-all duration-300 cursor-pointer"
+      >
+        <div 
+          className="relative aspect-[9/16] overflow-hidden bg-black"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <video
+            ref={videoRef}
+            src={project.videoSrc}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loop
+            muted
+            playsInline
+            preload="metadata"
+          />
+          
+          {/* Video play button overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-14 h-14 rounded-full bg-lime-400 flex items-center justify-center shadow-2xl shadow-lime-400/40">
+              {isPlaying ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-black">
+                  <path fillRule="evenodd" d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-black ml-1">
+                  <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
+                </svg>
+              )}
+            </div>
+          </div>
+          
+          {/* Overlay content at bottom */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+            <div>
+              <p className="text-lime-400 text-xs font-medium uppercase tracking-wider">{project.category}</p>
+              <p className="text-white font-medium text-sm mt-1">{project.title}</p>
+              <p className="text-lime-400 text-xs mt-1">View Case Study →</p>
+            </div>
+          </div>
+          
+          {/* Category badge */}
+          <div className="absolute top-3 left-3">
+            <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white/80">
+              {project.category}
+            </span>
+          </div>
+          
+          {/* Video badge */}
+          <div className="absolute top-3 right-3">
+            <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-green-500/60 backdrop-blur-sm border border-white/10 text-white/80">
+              🎬 Reel
+            </span>
+          </div>
+          
+          {/* Views and likes placeholder - like social media */}
+          <div className="absolute bottom-16 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="flex items-center gap-4">
+              <span className="text-white/50 text-xs flex items-center gap-1">
+                <span>👁</span> 1.2M
+              </span>
+              <span className="text-white/50 text-xs flex items-center gap-1">
+                <span>❤️</span> 85K
+              </span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 
@@ -328,6 +441,11 @@ const ProjectTestimonialCard = ({ project }) => {
 // PROJECT CARD COMPONENT - Updated with Link to Case Study
 // ============================================================================
 const ProjectCard = ({ project, index }) => {
+  // If it's a video project, use the video card component
+  if (project.isVideo) {
+    return <ProjectVideoCard project={project} index={index} />;
+  }
+
   return (
     <Link to={`/case-study/${project.id}`} className="block">
       <motion.div
@@ -658,7 +776,7 @@ const Projects = () => {
   ];
 
   // ============================================================
-  // SOCIAL MEDIA REELS DATA - Mixed with local videos and Vimeo
+  // SOCIAL MEDIA REELS DATA - Only Vimeo videos (local videos moved to UI/UX)
   // ============================================================
   const socialReels = useMemo(() => [
     {
@@ -671,15 +789,6 @@ const Projects = () => {
       isLocal: false,
     },
     {
-      id: 2,
-      title: "Local Video 1",
-      video: video1,
-      views: "1.8M",
-      likes: "98K",
-      isVimeo: false,
-      isLocal: true,
-    },
-    {
       id: 3,
       title: "Athlete Reel",
       video: "https://vimeo.com/1066154660",
@@ -687,15 +796,6 @@ const Projects = () => {
       likes: "210K",
       isVimeo: true,
       isLocal: false,
-    },
-    {
-      id: 4,
-      title: "Local Video 2",
-      video: video2,
-      views: "1.5M",
-      likes: "76K",
-      isVimeo: false,
-      isLocal: true,
     },
     {
       id: 5,
@@ -718,9 +818,37 @@ const Projects = () => {
   ], []);
 
   // ============================================================
-  // PROJECTS DATA
+  // VIDEO REELS DATA - For UI/UX Design category only (not shown in "All")
   // ============================================================
-  const allProjects = useMemo(() => [
+  const videoReels = useMemo(() => [
+    {
+      id: 9,
+      title: "Local Video Reel 1",
+      category: "UI/UX Design",
+      description: "Engaging UI/UX design showcase featuring smooth animations and interactive prototypes",
+      image: video1,
+      tags: ["UI/UX", "Animation", "Prototyping"],
+      isVideo: true,
+      videoSrc: video1,
+      isReel: true // Flag to identify reels
+    },
+    {
+      id: 10,
+      title: "Local Video Reel 2",
+      category: "UI/UX Design",
+      description: "Advanced UI/UX design patterns and micro-interactions demonstration",
+      image: video2,
+      tags: ["UI/UX", "Micro-interactions", "Design System"],
+      isVideo: true,
+      videoSrc: video2,
+      isReel: true // Flag to identify reels
+    },
+  ], []);
+
+  // ============================================================
+  // REGULAR PROJECTS DATA - Without video reels (for "All" view)
+  // ============================================================
+  const regularProjects = useMemo(() => [
     {
       id: 1,
       title: "Smart Logistics Dashboard",
@@ -788,46 +916,54 @@ const Projects = () => {
   ], []);
 
   // ============================================================
-// REAL PROJECTS DATA - 4 projects for 2x2 grid
-// ============================================================
-const realProjects = useMemo(() => [
-  {
-    id: 1,
-    title: "Bakery Faize Nagina",
-    category: "UI/UX Design",
-    description: "Complete user experience overhaul for a leading e-commerce platform resulting in 45% increase in conversions.",
-    image: bakery,
-    tags: ["UI/UX", "E-commerce", "Conversion Optimization"],
-    year: "2024"
-  },
-  {
-    id: 2,
-    title: "Pose Ai",
-    category: "AI powered pose detection",
-    description: "Comprehensive brand strategy and visual identity for a 5-star hotel chain across 12 locations.",
-    image: poseai,
-    tags: ["Detecting", "Pose", "AI"],
-    year: "2024"
-  },
-  {
-    id: 3,
-    title: "Public Shop",
-    category: "App Development",
-    description: "IoT-enabled dashboard for smart bakery management with real-time analytics and device control.",
-    image: publicshop,
-    tags: ["IoT", "Dashboard", "Real-time"],
-    year: "2023"
-  },
-  {
-    id: 4,
-    title: "Lahore Plastic",
-    category: "Shipping & Fullfilment",
-    description: "Sustainable and ergonomic web design for a real startup, featuring biophilic elements and smart strategies.",
-    image: shippingfullfilment,
-    tags: ["Interior", "Sustainable", "Smart Office"],
-    year: "2024"
-  },
-], []);
+  // ALL PROJECTS WITH REELS - Only used for filtering by category
+  // ============================================================
+  const allProjectsWithReels = useMemo(() => [
+    ...regularProjects,
+    ...videoReels,
+  ], [regularProjects, videoReels]);
+
+  // ============================================================
+  // REAL PROJECTS DATA - 4 projects for 2x2 grid
+  // ============================================================
+  const realProjects = useMemo(() => [
+    {
+      id: 'bakery-faize',
+      title: "Bakery Faize Nagina",
+      category: "UI/UX Design",
+      description: "Complete user experience overhaul for a leading e-commerce platform resulting in 45% increase in conversions.",
+      image: bakery,
+      tags: ["UI/UX", "E-commerce", "Conversion Optimization"],
+      year: "2024"
+    },
+    {
+      id: 'pose-ai',
+      title: "Pose Ai",
+      category: "AI powered pose detection",
+      description: "Comprehensive brand strategy and visual identity for a 5-star hotel chain across 12 locations.",
+      image: poseai,
+      tags: ["Detecting", "Pose", "AI"],
+      year: "2024"
+    },
+    {
+      id: 'public-shop',
+      title: "Public Shop",
+      category: "App Development",
+      description: "IoT-enabled dashboard for smart bakery management with real-time analytics and device control.",
+      image: publicshop,
+      tags: ["IoT", "Dashboard", "Real-time"],
+      year: "2023"
+    },
+    {
+      id: 'lahore-plastic',
+      title: "Lahore Plastic",
+      category: "Shipping & Fullfilment",
+      description: "Sustainable and ergonomic web design for a real startup, featuring biophilic elements and smart strategies.",
+      image: shippingfullfilment,
+      tags: ["Interior", "Sustainable", "Smart Office"],
+      year: "2024"
+    },
+  ], []);
 
   // ============================================================
   // SERVICES DATA
@@ -914,19 +1050,21 @@ const realProjects = useMemo(() => [
   ];
 
   const categories = useMemo(() => 
-    ["All", "Social Media Reels", ...new Set(allProjects.map(p => p.category))], 
-    [allProjects]
+    ["All", "Social Media Reels", ...new Set(allProjectsWithReels.map(p => p.category))], 
+    [allProjectsWithReels]
   );
 
   const filteredProjects = useMemo(() => {
     if (filter === "All") {
-      return allProjects;
+      // Show only regular projects (no video reels) in "All" view
+      return regularProjects;
     } else if (filter === "Social Media Reels") {
       return [];
     } else {
-      return allProjects.filter(p => p.category === filter);
+      // For specific categories, include video reels
+      return allProjectsWithReels.filter(p => p.category === filter);
     }
-  }, [allProjects, filter]);
+  }, [regularProjects, allProjectsWithReels, filter]);
 
   useEffect(() => {
     setAnimatedProjects([]);
